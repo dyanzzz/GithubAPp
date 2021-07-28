@@ -33,7 +33,10 @@ android {
         jvmTarget = '1.8'
     }
 
-
+    // menggunakan view binding
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
