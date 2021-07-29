@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             val query = etQuery.text.toString()
             if (query.isEmpty()) return
             showLoading(true)
-            println(query)
+            println("###### $query")
             viewModel.setSearchUsers(query)
         }
     }

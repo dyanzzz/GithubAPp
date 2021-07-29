@@ -17,7 +17,7 @@ class MainViewModel: ViewModel() {
 
     // function setter
     fun setSearchUsers(query: String) {
-        println(query)
+        println("###### $query")
         RetrofitClient.apiInstance
             .getSearchUser(query)
             .enqueue(object : Callback<UserResponse>{
@@ -28,13 +28,12 @@ class MainViewModel: ViewModel() {
                     if (response.isSuccessful) {
                         listUser.postValue(response.body()?.items)
                     }
-                    println("Response $response")
+                    println("###### Response $response")
                 }
 
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                     t.message?.let {
-                        Log.d("Failure", it)
-                        println("Failure it $it")
+                        println("###### Failure it $it")
                     }
 
                 }
