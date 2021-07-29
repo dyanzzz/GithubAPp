@@ -9,6 +9,8 @@ import retrofit2.http.Query
 
 interface Api {
     @GET("search/users")
-    @Headers("Authorization: token "+BuildConfig.API_KEY)
-    fun getSearchUser(@Query("q") query: String): Call<UserResponse>
+    @Headers("Authorization: ${BuildConfig.API_KEY}")
+    fun getSearchUser(
+        @Query("q") query: String
+    ): Call<UserResponse>
 }
