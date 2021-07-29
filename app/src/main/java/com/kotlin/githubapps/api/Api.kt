@@ -18,7 +18,7 @@ interface Api {
         query: String
     ): Call<UserResponse>
 
-    @GET("user/{username}")
+    @GET("users/{username}")
     @Headers("Authorization: ${BuildConfig.API_KEY}")
     fun getUserDetail(
         @Path("username")
