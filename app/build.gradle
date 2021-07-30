@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -61,4 +62,17 @@ dependencies {
 
     // material untuk view pager
     implementation 'com.google.android.material:material:1.4.0'
+
+    // implement room storage
+    def roomVersion = '2.2.6'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+    // implement coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
 }
