@@ -6,11 +6,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.kotlin.githubapps.databinding.ActivityDetailUserBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailUserActivity : AppCompatActivity() {
 
     companion object{
         const val EXTRA_USERNAME = "extra_username"
+        const val EXTRA_ID = "extra_id"
     }
 
     private lateinit var binding: ActivityDetailUserBinding
@@ -23,17 +28,17 @@ class DetailUserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
+        val id = intent.getIntExtra(EXTRA_ID, 0)
         // berbagi data yg ada pada detail activity
         // username akan dibagi ke fragment-fragment yg ada di section pager, yaitu follower & following
         val bundle = Bundle()
         bundle.putString(EXTRA_USERNAME, username)
 
         // membuat instance view model pada detailactivity, ambil dari detail user view model yang sudah dibuat
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailUserViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(DetailUserViewModel::class.java)
 
-        if (username != null) {
-            viewModel.setUserDetail(username)
-        }
+        username?.let { viewModel.setUserDetail(it) }
+
         viewModel.getUserDetail().observe(this, {
             if (it != null) {
                 binding.apply {
@@ -49,6 +54,35 @@ class DetailUserActivity : AppCompatActivity() {
                 }
             }
         })
+
+        var isChecked = false
+        CoroutineScope(Dispatchers.IO).launch {
+            val count = viewModel.checkUser(id)
+            // set ke UI dengan cara withContext
+            withContext(Dispatchers.Main){
+                if (count != null) {
+                    if (count > 0) {
+                        binding.toggleFavorite.isChecked = true
+                        isChecked = true
+                    } else {
+                        binding.toggleFavorite.isChecked = false
+                        isChecked = false
+                    }
+                }
+            }
+        }
+
+        binding.toggleFavorite.setOnClickListener {
+            isChecked = !isChecked
+            if (isChecked) {
+                username?.let { viewModel.addToFavorite(it, id) }
+
+            } else {
+                viewModel.removeFromFavorite(id)
+            }
+
+            binding.toggleFavorite.isChecked = isChecked
+        }
 
         // declare to create instance sectionPagerAdapter
         // menambahkan argument bundle yg berisi data username
