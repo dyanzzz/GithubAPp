@@ -1,21 +1,38 @@
 package com.kotlin.githubapps.ui.detail
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.kotlin.githubapps.api.RetrofitClient
+import com.kotlin.githubapps.data.local.FavoriteUser
+import com.kotlin.githubapps.data.local.FavoriteUserDao
+import com.kotlin.githubapps.data.local.UserDatabase
 import com.kotlin.githubapps.data.model.DetailUserResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailUserViewModel: ViewModel() {
+// menambahkan constructor application, karena membutuhkan variable application ketika mengakses room
+// merubah return ViewModel -> AndroidViewModel
+class DetailUserViewModel(application: Application) : AndroidViewModel(application) {
     val user = MutableLiveData<DetailUserResponse>()
+
+    // declare Dao
+    private var userDao: FavoriteUserDao?
+    private var userDb: UserDatabase? = UserDatabase.getDatabase(application)
+
+    init {
+        userDao = userDb?.favoriteUserDao()
+    }
 
     fun setUserDetail(username: String) {
         RetrofitClient.apiInstance
             .getUserDetail(username)
-            .enqueue(object : Callback<DetailUserResponse>{
+            .enqueue(object : Callback<DetailUserResponse> {
                 override fun onResponse(
                     call: Call<DetailUserResponse>,
                     response: Response<DetailUserResponse>
@@ -33,5 +50,24 @@ class DetailUserViewModel: ViewModel() {
     }
 
     fun getUserDetail(): LiveData<DetailUserResponse> = user
+
+    fun addToFavorite(username: String, id: Int) {
+        // menjalankan prosesnya di background
+        CoroutineScope(Dispatchers.IO).launch {
+            val user = FavoriteUser(
+                username,
+                id
+            )
+            userDao?.addFavorite(user)
+        }
+    }
+
+    fun checkUser(id: Int) = userDao?.checkUser(id)
+
+    fun removeFromFavorite(id: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            userDao?.removeFromFavorite(id)
+        }
+    }
 
 }
