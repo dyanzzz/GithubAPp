@@ -23,6 +23,10 @@ class DetailUserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
+        // berbagi data yg ada pada detail activity
+        // username akan dibagi ke fragment-fragment yg ada di section pager, yaitu follower & following
+        val bundle = Bundle()
+        bundle.putString(EXTRA_USERNAME, username)
 
         // membuat instance view model pada detailactivity, ambil dari detail user view model yang sudah dibuat
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailUserViewModel::class.java)
@@ -47,7 +51,8 @@ class DetailUserActivity : AppCompatActivity() {
         })
 
         // declare to create instance sectionPagerAdapter
-        val sectionPagerAdapter = SectionPagerAdapter(this, supportFragmentManager)
+        // menambahkan argument bundle yg berisi data username
+        val sectionPagerAdapter = SectionPagerAdapter(this, supportFragmentManager, bundle)
         binding.apply {
             viewPager.adapter = sectionPagerAdapter
             tabs.setupWithViewPager(viewPager)
