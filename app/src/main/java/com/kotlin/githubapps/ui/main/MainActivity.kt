@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                 Intent(this@MainActivity, DetailUserActivity::class.java).also {
                     it.putExtra(DetailUserActivity.EXTRA_USERNAME, data.login)
                     it.putExtra(DetailUserActivity.EXTRA_ID, data.id)
+                    it.putExtra(DetailUserActivity.EXTRA_AVATAR_URL, data.avatar_url)
                     startActivity(it)
                 }
             }

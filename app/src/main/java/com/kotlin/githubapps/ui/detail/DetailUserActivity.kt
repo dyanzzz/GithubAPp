@@ -16,6 +16,7 @@ class DetailUserActivity : AppCompatActivity() {
     companion object{
         const val EXTRA_USERNAME = "extra_username"
         const val EXTRA_ID = "extra_id"
+        const val EXTRA_AVATAR_URL = "extra_avatar_url"
     }
 
     private lateinit var binding: ActivityDetailUserBinding
@@ -29,6 +30,7 @@ class DetailUserActivity : AppCompatActivity() {
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
         val id = intent.getIntExtra(EXTRA_ID, 0)
+        val avatarUrl = intent.getStringExtra(EXTRA_AVATAR_URL)
         // berbagi data yg ada pada detail activity
         // username akan dibagi ke fragment-fragment yg ada di section pager, yaitu follower & following
         val bundle = Bundle()
@@ -75,7 +77,11 @@ class DetailUserActivity : AppCompatActivity() {
         binding.toggleFavorite.setOnClickListener {
             isChecked = !isChecked
             if (isChecked) {
-                username?.let { viewModel.addToFavorite(it, id) }
+                if (username != null) {
+                    if (avatarUrl != null) {
+                        viewModel.addToFavorite(username, id, avatarUrl)
+                    }
+                }
 
             } else {
                 viewModel.removeFromFavorite(id)

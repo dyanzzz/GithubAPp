@@ -51,12 +51,13 @@ class DetailUserViewModel(application: Application) : AndroidViewModel(applicati
 
     fun getUserDetail(): LiveData<DetailUserResponse> = user
 
-    fun addToFavorite(username: String, id: Int) {
-        // menjalankan prosesnya di background
+    fun addToFavorite(username: String, id: Int, avatarUrl: String) {
+        // menjalankan prosesnya di background untuk memasukan object favorite user ke userDao
         CoroutineScope(Dispatchers.IO).launch {
             val user = FavoriteUser(
                 username,
-                id
+                id,
+                avatarUrl
             )
             userDao?.addFavorite(user)
         }
