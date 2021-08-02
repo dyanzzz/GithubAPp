@@ -28,7 +28,7 @@
                 android:id="@+id/et_query"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Search"
+                android:hint="@string/search"
                 android:inputType="text"
                 android:maxLines="1" />
 
@@ -40,7 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_search" />
+            android:src="@drawable/ic_search"
+            android:contentDescription="@string/app_name" />
 
     </FrameLayout>
 

@@ -2,4 +2,10 @@
     <string name="app_name">GithubApps</string>
     <string name="tab_1">Followers</string>
     <string name="tab_2">Following</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
+    <string name="set_reminder">Set Reminder</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="settings">Settings</string>
 </resources>

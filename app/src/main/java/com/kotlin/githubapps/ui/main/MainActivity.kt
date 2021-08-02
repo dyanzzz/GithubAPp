@@ -14,6 +14,7 @@ import com.kotlin.githubapps.data.model.User
 import com.kotlin.githubapps.databinding.ActivityMainBinding
 import com.kotlin.githubapps.ui.detail.DetailUserActivity
 import com.kotlin.githubapps.ui.favorite.FavoriteActivity
+import com.kotlin.githubapps.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -99,6 +100,11 @@ class MainActivity : AppCompatActivity() {
         when(item.itemId){
             R.id.favorite_menu -> {
                 Intent(this, FavoriteActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
+            R.id.settings_menu -> {
+                Intent(this, SettingsActivity::class.java).also {
                     startActivity(it)
                 }
             }
