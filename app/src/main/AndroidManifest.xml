@@ -3,6 +3,8 @@
     package="com.kotlin.githubapps">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <permission android:name="com.kotlin.githubapps.READ_DATABASE"
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
@@ -33,7 +35,14 @@
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <provider
+            android:name=".provider.UserContentProvider"
+            android:authorities="com.kotlin.githubapps"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.kotlin.githubapps.READ_DATABASE"/>
     </application>
 
 </manifest>

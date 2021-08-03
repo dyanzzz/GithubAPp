@@ -1,5 +1,6 @@
 package com.kotlin.githubapps.data.local
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -19,4 +20,7 @@ interface FavoriteUserDao {
 
     @Query("DELETE FROM favorite_user WHERE favorite_user.id = :id")
     fun removeFromFavorite(id: Int): Int
+
+    @Query("SELECT * FROM favorite_user")
+    fun findAll(): Cursor
 }
